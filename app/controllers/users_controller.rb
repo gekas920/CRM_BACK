@@ -40,8 +40,9 @@ class UsersController < ApplicationController
   end
   def show_name
     id = token_id
-    @user = User.find_by_id(id)
-    render json: {name:@user.user_firstname}
+    @user = User.joins(:position).select('user_firstname',
+                                         'post').find_by_id(id)
+    render json: {name:@user.user_firstname,post:@user.post}
   end
   def show_post
     @pos = Position.select('post').all
